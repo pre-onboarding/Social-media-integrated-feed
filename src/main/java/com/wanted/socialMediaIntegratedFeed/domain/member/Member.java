@@ -1,4 +1,4 @@
-package com.wanted.socialMediaIntegratedFeed.domain.user;
+package com.wanted.socialMediaIntegratedFeed.domain.member;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Builder
 @AllArgsConstructor
-public class User {
+public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
