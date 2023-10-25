@@ -1,4 +1,4 @@
-package com.wanted.skeleton;
+package com.wanted.socialMediaIntegratedFeed;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
