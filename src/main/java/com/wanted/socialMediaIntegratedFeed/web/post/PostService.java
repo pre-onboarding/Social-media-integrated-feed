@@ -1,25 +1,25 @@
 package com.wanted.socialMediaIntegratedFeed.web.post;
 
-import com.wanted.socialMediaIntegratedFeed.domain.content.Content;
-import com.wanted.socialMediaIntegratedFeed.domain.content.ContentRepository;
-import com.wanted.socialMediaIntegratedFeed.global.common.RespnoseStatusValue;
-import com.wanted.socialMediaIntegratedFeed.global.exception.NotFoundException;
+import com.wanted.socialMediaIntegratedFeed.domain.post.Post;
+import com.wanted.socialMediaIntegratedFeed.domain.post.PostRepository;
+import com.wanted.socialMediaIntegratedFeed.global.exception.ErrorCode;
+import com.wanted.socialMediaIntegratedFeed.global.exception.ErrorException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class PostService {
 
-    private final ContentRepository contentRepository;
+    private final PostRepository postRepository;
 
+    @Transactional
     public void increaseLike(final long id) {
         // JWT에 이메일을 가져와서 해당 member가 있는지 확인 하는 과정 생략
         // 추후 개발 예정
-        Content content = contentRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException(RespnoseStatusValue.NOT_FOUND_CONTENT));
-
-        content.setLikeCount(content.getLikeCount() + 1);
-        contentRepository.save(content);
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new ErrorException(ErrorCode.NOT_FOUND_POST));
+        post.increaseLike();
     }
 }

@@ -1,8 +1,7 @@
 package com.wanted.socialMediaIntegratedFeed.web.post;
 
-import com.wanted.socialMediaIntegratedFeed.global.common.RespnoseStatusValue;
-import com.wanted.socialMediaIntegratedFeed.global.common.ResponseResult;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,9 +18,9 @@ public class PostController {
      * @return
      */
     @PatchMapping("/api/v1/content/{id}/like")
-    public ResponseResult<RespnoseStatusValue> patchLike(@PathVariable final long id) {
+    public ResponseEntity patchLike(@PathVariable final long id) {
         //String email = SecurityContextHolder.getContext().getAuthentication().getName();
         postService.increaseLike(id);
-        return new ResponseResult<>(RespnoseStatusValue.SUCCESS);
+        return ResponseEntity.ok().build();
     }
 }

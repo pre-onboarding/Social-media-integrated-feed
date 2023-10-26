@@ -1,4 +1,4 @@
-package com.wanted.socialMediaIntegratedFeed.domain.content;
+package com.wanted.socialMediaIntegratedFeed.domain.post;
 
 import com.wanted.socialMediaIntegratedFeed.domain.hashtag.Hashtag;
 import jakarta.persistence.*;
@@ -12,15 +12,15 @@ import lombok.NoArgsConstructor;
 @Getter
 @Builder
 @AllArgsConstructor
-public class ContentHashtag {
+public class PostHashtag {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "content_id")
-    private Content content;
+    @JoinColumn(name = "post_id")
+    private Post post;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hashtag_id")

@@ -1,4 +1,4 @@
-package com.wanted.socialMediaIntegratedFeed.domain.content;
+package com.wanted.socialMediaIntegratedFeed.domain.post;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -6,31 +6,27 @@ import lombok.*;
 @NoArgsConstructor
 @Entity
 @Getter
-@Setter
 @Builder
 @AllArgsConstructor
-public class Content {
+public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column
     private String type;
-
     @Column
     private String title;
-
     @Column(columnDefinition = "LONGTEXT")
     private String content;
-
     @Column
     private Long viewCount;
-
     @Column
     private Long likeCount;
-
     @Column
     private Long shareCount;
 
+    public void increaseLike() {
+        this.likeCount += 1;
+    }
 }
