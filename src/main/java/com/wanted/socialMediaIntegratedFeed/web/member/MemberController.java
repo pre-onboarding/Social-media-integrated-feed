@@ -22,7 +22,7 @@ public class MemberController {
             @ApiResponse(responseCode = "200")
     })
     @Tag(name = "Members")
-    @PostMapping("/api/v1/member/signup")
+    @PostMapping("/api/v1/member")
     public ResponseEntity memberSignup(@Validated @RequestBody SignupRequest request) {
 
         memberService.memberSignup(request);
