@@ -29,4 +29,8 @@ public class Post {
     public void increaseLike() {
         this.likeCount += 1;
     }
+
+    public void increaseShare() {
+        this.shareCount += 1;
+    }
 }

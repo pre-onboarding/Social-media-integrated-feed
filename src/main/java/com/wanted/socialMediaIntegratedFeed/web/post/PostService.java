@@ -16,10 +16,15 @@ public class PostService {
 
     @Transactional
     public void increaseLike(final long id) {
-        // JWT에 이메일을 가져와서 해당 member가 있는지 확인 하는 과정 생략
-        // 추후 개발 예정
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new ErrorException(ErrorCode.NOT_FOUND_POST));
         post.increaseLike();
+    }
+
+    @Transactional
+    public void increaseShare(final long id) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new ErrorException(ErrorCode.NOT_FOUND_POST));
+        post.increaseShare();
     }
 }

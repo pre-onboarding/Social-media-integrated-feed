@@ -19,8 +19,18 @@ public class PostController {
      */
     @PatchMapping("/api/v1/content/{id}/like")
     public ResponseEntity patchLike(@PathVariable final long id) {
-        //String email = SecurityContextHolder.getContext().getAuthentication().getName();
         postService.increaseLike(id);
+        return ResponseEntity.ok().build();
+    }
+
+    /**
+     * 공유 API
+     * @param id
+     * @return
+     */
+    @PatchMapping("/api/v1/content/{id}/share")
+    public ResponseEntity patchShare(@PathVariable final long id) {
+        postService.increaseShare(id);
         return ResponseEntity.ok().build();
     }
 }
