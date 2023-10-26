@@ -1,5 +1,6 @@
 package com.wanted.socialMediaIntegratedFeed.domain.content;
 
+import com.wanted.socialMediaIntegratedFeed.global.common.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,14 +12,15 @@ import lombok.NoArgsConstructor;
 @Getter
 @Builder
 @AllArgsConstructor
-public class Content {
+public class Content extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private Type type;
 
     @Column
     private String title;
