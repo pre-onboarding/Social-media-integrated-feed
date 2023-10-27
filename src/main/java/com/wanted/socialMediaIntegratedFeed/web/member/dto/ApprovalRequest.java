@@ -24,6 +24,6 @@ public class ApprovalRequest {
 
     @Schema(description = "인증코드", example = "123456")
     @NotBlank(message = "인증코드를 입력하세요.")
-    @Pattern(regexp = "^[0-9]*${6}")
+    @Pattern(regexp = "^[0-9]{6}", message = "잘못된 인증코드 형식입니다.")
     private String authCode;
 }
