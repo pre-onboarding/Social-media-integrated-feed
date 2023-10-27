@@ -1,4 +1,4 @@
-package com.wanted.socialMediaIntegratedFeed.domain.content;
+package com.wanted.socialMediaIntegratedFeed.domain.post;
 
 import com.wanted.socialMediaIntegratedFeed.domain.hashtag.Hashtag;
 import com.wanted.socialMediaIntegratedFeed.global.common.entity.BaseTimeEntity;
@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Builder
 @AllArgsConstructor
-public class ContentHashtag extends BaseTimeEntity {
+public class PostHashtag extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +21,7 @@ public class ContentHashtag extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "content_id")
-    private Content content;
+    private Post post;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hashtag_id")

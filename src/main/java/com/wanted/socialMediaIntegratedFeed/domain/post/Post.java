@@ -1,4 +1,4 @@
-package com.wanted.socialMediaIntegratedFeed.domain.content;
+package com.wanted.socialMediaIntegratedFeed.domain.post;
 
 import com.wanted.socialMediaIntegratedFeed.global.common.entity.BaseTimeEntity;
 import jakarta.persistence.*;
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Builder
 @AllArgsConstructor
-public class Content extends BaseTimeEntity {
+public class Post extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
