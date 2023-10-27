@@ -39,8 +39,8 @@ public class MemberService implements UserDetailsService {
 
     /**
      * 멤버 회원가입
-     * @param request 에서 받은 이메일, 유저네임이 중복되어 있는지 확인 후 패스워드를 암호화해서 멤버를 저장합니다.
-     *                멤버 인증코드를 생성하여 redis에 저장
+     * @param request 에서 받은 이메일, 유저네임이 중복되어 있는지 확인 후 패스워드를 암호화해서 멤버를 저장 후
+     *                sendAuthCode에 email, username을 보내 인증코드 전송
      */
     @Transactional
     public void memberSignup(SignupRequest request) {
@@ -54,12 +54,23 @@ public class MemberService implements UserDetailsService {
 
         memberRepository.save(member);
 
+        sendAuthCode(member.getEmail(), member.getUsername());
+    }
+
+    /**
+     * 인증코드 전송
+     * @param username
+     * 인증코드를 생성 후 redis에 key = "AuthCode " + 유저네임, value = 인증코드 저장(5분 뒤 redis에서 자동 삭제 됨.)
+     * @param email: 이메일로 인증 코드 전송
+     */
+    @Transactional
+    public void sendAuthCode(String email, String username) {
         String authCode = createAuthCode();
 
         valueOperations = redisTemplate.opsForValue();
-        valueOperations.set("AuthCode "+ member.getUsername(), authCode, 5, TimeUnit.MINUTES);
+        valueOperations.set("AuthCode "+ username, authCode, 5, TimeUnit.MINUTES);
         /** Todo: 이메일로 인증코드 전송 기능 추가시 삭제 요망 */
-        log.info("AuthCode = {}", valueOperations.get("AuthCode " + member.getUsername()));
+        log.info("AuthCode = {}", valueOperations.get("AuthCode " + username));
     }
 
     /**
