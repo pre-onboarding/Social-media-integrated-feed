@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import static com.wanted.socialMediaIntegratedFeed.global.exception.ErrorCode.*;
 
@@ -56,7 +57,7 @@ public class MemberService implements UserDetailsService {
         String authCode = createAuthCode();
 
         valueOperations = redisTemplate.opsForValue();
-        valueOperations.set("AuthCode "+ member.getUsername(), authCode);
+        valueOperations.set("AuthCode "+ member.getUsername(), authCode, 5, TimeUnit.MINUTES);
         /** Todo: 이메일로 인증코드 전송 기능 추가시 삭제 요망 */
         log.info("AuthCode = {}", valueOperations.get("AuthCode " + member.getUsername()));
     }
@@ -82,7 +83,6 @@ public class MemberService implements UserDetailsService {
             throw new ErrorException(WRONG_AUTH_CODE);
         }
         member.updateAuth();
-        redisTemplate.delete("AuthCode " + member.getUsername());
     }
 
     /**
