@@ -18,7 +18,7 @@ import static org.mockito.Mockito.when;
 class MemberServiceTest {
 
     @InjectMocks
-    private MemberServiceImpl memberService;
+    private MemberService memberService;
 
     @Mock
     private MemberRepository memberRepository;
