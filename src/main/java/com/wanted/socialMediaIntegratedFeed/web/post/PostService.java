@@ -16,15 +16,18 @@ public class PostService {
 
     @Transactional
     public void increaseLike(final long id) {
-        Post post = postRepository.findById(id)
-                .orElseThrow(() -> new ErrorException(ErrorCode.NOT_FOUND_POST));
+        Post post = findById(id);
         post.increaseLike();
     }
 
     @Transactional
     public void increaseShare(final long id) {
-        Post post = postRepository.findById(id)
-                .orElseThrow(() -> new ErrorException(ErrorCode.NOT_FOUND_POST));
+        Post post = findById(id);
         post.increaseShare();
+    }
+
+    private Post findById(final long id) {
+        return postRepository.findById(id)
+                .orElseThrow(() -> new ErrorException(ErrorCode.NOT_FOUND_POST));
     }
 }
