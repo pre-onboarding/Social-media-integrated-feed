@@ -13,5 +13,9 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Modifying
     @Query("UPDATE Member m SET m.refreshToken = ?2 WHERE m.id = ?1")
     void updateRefreshToken(Long id, String refreshToken);
+  
+    boolean existsByEmail(String email);
+
+    boolean existsByUsername(String email);
 
 }
