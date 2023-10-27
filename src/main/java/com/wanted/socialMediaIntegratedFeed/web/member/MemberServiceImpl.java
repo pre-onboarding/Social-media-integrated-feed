@@ -2,16 +2,21 @@ package com.wanted.socialMediaIntegratedFeed.web.member;
 
 import com.wanted.socialMediaIntegratedFeed.domain.member.Member;
 import com.wanted.socialMediaIntegratedFeed.domain.member.MemberRepository;
+import com.wanted.socialMediaIntegratedFeed.global.exception.ErrorCode;
 import com.wanted.socialMediaIntegratedFeed.global.exception.ErrorException;
+import com.wanted.socialMediaIntegratedFeed.web.member.dto.ApprovalRequest;
 import com.wanted.socialMediaIntegratedFeed.web.member.dto.SignupRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.wanted.socialMediaIntegratedFeed.global.exception.ErrorCode.DUPLICATE_EMAIL;
-import static com.wanted.socialMediaIntegratedFeed.global.exception.ErrorCode.DUPLICATE_USERNAME;
+import java.util.Random;
+
+import static com.wanted.socialMediaIntegratedFeed.global.exception.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -22,9 +27,15 @@ public class MemberServiceImpl implements MemberService{
 
     private final PasswordEncoder encoder;
 
+    private final RedisTemplate redisTemplate;
+
+    private ValueOperations<String, String> valueOperations;
+
+
     /**
      * 멤버 회원가입
      * @param request 에서 받은 이메일, 유저네임이 중복되어 있는지 확인 후 패스워드를 암호화해서 멤버를 저장합니다.
+     *                멤버 인증코드를 생성하여 redis에 저장
      */
     @Override
     @Transactional
@@ -38,6 +49,26 @@ public class MemberServiceImpl implements MemberService{
                 .password(encoder.encode(request.getPassword())).build();
 
         memberRepository.save(member);
+
+        String authCode = createAuthCode();
+
+        valueOperations = redisTemplate.opsForValue();
+        valueOperations.set("AuthCode "+ member.getUsername(), authCode);
+        /** Todo: 이메일로 인증코드 전송 기능 추가시 삭제 요망 */
+        log.info("AuthCode = {}", valueOperations.get("AuthCode " + member.getUsername()));
+    }
+
+    /**
+     * 랜덤 6자리 인증 코드 생성
+     */
+    private String createAuthCode() {
+        Random rand  = new Random();
+        String numStr = "";
+        for (int i = 0; i < 6; i++) {
+            String ran = Integer.toString(rand.nextInt(10));
+            numStr += ran;
+        }
+        return numStr;
     }
 
     /**

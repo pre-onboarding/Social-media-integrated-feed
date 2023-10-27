@@ -24,6 +24,16 @@ spring:
     hibernate:
       ddl-auto: create
     show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+      defer-datasource-initialization: true
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    ssl:
+      enabled: true
   sql:
     init:
       mode: always
