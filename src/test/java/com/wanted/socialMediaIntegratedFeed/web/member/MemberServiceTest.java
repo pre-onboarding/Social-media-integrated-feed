@@ -8,10 +8,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.notNull;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -26,6 +29,12 @@ class MemberServiceTest {
     @Mock
     private PasswordEncoder encoder;
 
+    @Mock
+    private RedisTemplate redisTemplate;
+
+    @Mock
+    private ValueOperations<String, String> valueOperations;
+
     @Transactional
     @Test
     @DisplayName("Member 회원가입 성공")
@@ -33,6 +42,10 @@ class MemberServiceTest {
         // given
         SignupRequest request = new SignupRequest("example@gmail.com", "example", "example12345");
         // when
+        when(redisTemplate.opsForValue()).thenReturn(valueOperations);
+        valueOperations = redisTemplate.opsForValue();
+        // stub
+
         // then
         memberService.memberSignup(request);
     }

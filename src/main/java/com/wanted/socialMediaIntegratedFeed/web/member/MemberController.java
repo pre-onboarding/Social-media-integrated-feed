@@ -1,5 +1,6 @@
 package com.wanted.socialMediaIntegratedFeed.web.member;
 
+import com.wanted.socialMediaIntegratedFeed.web.member.dto.ApprovalRequest;
 import com.wanted.socialMediaIntegratedFeed.web.member.dto.SignupRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -46,6 +47,17 @@ public class MemberController {
     public ResponseEntity<Map<String, String>> signin(@AuthenticationPrincipal Member member) {
         String accessToken = memberService.signin(member);
         return ResponseEntity.ok(Map.of("accessToken", accessToken));
+    }
+
+    @Operation(summary = "멤버 인증 API", responses = {
+            @ApiResponse(responseCode = "200")
+    })
+    @Tag(name = "Members")
+    @PostMapping("/approval")
+    public ResponseEntity memberApproval(@Validated @RequestBody ApprovalRequest request) {
+        memberService.memberApproval(request);
+
+        return ResponseEntity.ok().build();
     }
 
 }
