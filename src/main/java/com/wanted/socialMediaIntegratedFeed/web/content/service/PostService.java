@@ -1,7 +1,7 @@
-package com.wanted.socialMediaIntegratedFeed.api.content.service;
+package com.wanted.socialMediaIntegratedFeed.web.content.service;
 
 
-import com.wanted.socialMediaIntegratedFeed.api.content.dto.response.PostPaginationResponse;
+import com.wanted.socialMediaIntegratedFeed.web.content.dto.response.PostPaginationResponse;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

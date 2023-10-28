@@ -1,4 +1,4 @@
-package com.wanted.socialMediaIntegratedFeed.api.content.dto.response;
+package com.wanted.socialMediaIntegratedFeed.web.content.dto.response;
 
 
 import com.wanted.socialMediaIntegratedFeed.domain.hashtag.Hashtag;
