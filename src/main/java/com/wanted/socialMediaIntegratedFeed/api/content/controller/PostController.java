@@ -41,7 +41,7 @@ public class PostController {
         }
         Pageable pageable = PageableUtil.of(pageCount,page, sort);
 
-        Page<PostPaginationResponse> responses = postService.findAllByHashtag(pageable);
+        Page<PostPaginationResponse> responses = postService.findAllByHashtag(hashtag,type,searchBy,search,pageable);
 
         return ResponseEntity.ok().body(responses);
     }
