@@ -65,6 +65,11 @@ public class MemberService implements UserDetailsService {
      */
     @Transactional
     public void sendAuthCode(String email, String username) {
+        Member member = memberRepository.findByEmail(email).orElseThrow(() -> new ErrorException(NON_EXISTENT_MEMBER));
+        if (!member.getUsername().equals(username)) {
+            throw new ErrorException(WRONG_USERNAME);
+        }
+
         String authCode = createAuthCode();
 
         valueOperations = redisTemplate.opsForValue();
