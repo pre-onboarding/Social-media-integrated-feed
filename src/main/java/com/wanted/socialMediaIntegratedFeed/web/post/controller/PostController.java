@@ -4,6 +4,9 @@ import com.wanted.socialMediaIntegratedFeed.global.common.dto.PageResponseDto;
 import com.wanted.socialMediaIntegratedFeed.global.common.util.PageableUtil;
 import com.wanted.socialMediaIntegratedFeed.web.post.dto.response.PostPaginationResponse;
 import com.wanted.socialMediaIntegratedFeed.web.post.service.PostService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -15,12 +18,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("/api/v1/content")
+@RequestMapping("/api/v1/post")
 @RequiredArgsConstructor
+@Tag(name = "Post Controller",description = "Post API")
 public class PostController {
 
     private final PostService postService;
-
+    @Operation(summary = "게시물 목록 api")
+    @ApiResponse(responseCode = "200", description = "조회 성공")
     @GetMapping
     public ResponseEntity<PageResponseDto<PostPaginationResponse>> findAll(
             @RequestParam("hashtag") String hashtag,
