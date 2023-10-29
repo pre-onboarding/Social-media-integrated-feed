@@ -1,5 +1,6 @@
 package com.wanted.socialMediaIntegratedFeed.web.content.controller;
 
+import com.wanted.socialMediaIntegratedFeed.global.common.dto.PageResponseDto;
 import com.wanted.socialMediaIntegratedFeed.web.content.dto.response.PostPaginationResponse;
 import com.wanted.socialMediaIntegratedFeed.web.content.service.PostService;
 import com.wanted.socialMediaIntegratedFeed.global.common.util.PageableUtil;
@@ -22,15 +23,15 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping
-    public ResponseEntity<Page<PostPaginationResponse>> findAll(
+    public ResponseEntity<PageResponseDto<PostPaginationResponse>> findAll(
             @RequestParam("hashtag") String hashtag,
             @RequestParam("type") String type,
-            @RequestParam("orderBy") String orderBy,
+            @RequestParam(value = "orderBy",defaultValue = "created_at") String orderBy,
             @RequestParam("orderBy1") String orderBy1,
-            @RequestParam("searchBy") String searchBy,
+            @RequestParam(value = "searchBy",defaultValue = "title,content") String searchBy,
             @RequestParam("search") String search,
-            @RequestParam("pageCount") int pageCount,
-            @RequestParam("page") int page) {
+            @RequestParam(value = "pageCount",defaultValue = "10") int pageCount,
+            @RequestParam(value = "page",defaultValue = "0") int page) {
         Sort sort;
         if(orderBy1.equals("내림차순") ){
             sort = Sort.by(Sort.Direction.ASC, orderBy);
@@ -38,9 +39,9 @@ public class PostController {
         else{
             sort = Sort.by(Sort.Direction.DESC, orderBy);
         }
-        Pageable pageable = PageableUtil.of(pageCount,page, sort);
+        Pageable pageable = PageableUtil.of(page,pageCount, sort);
 
-        Page<PostPaginationResponse> responses = postService.findAllByHashtag(hashtag,type,searchBy,search,pageable);
+        PageResponseDto<PostPaginationResponse> responses = postService.findAllByHashtag(hashtag,type,searchBy,search,pageable);
 
         return ResponseEntity.ok().body(responses);
     }
