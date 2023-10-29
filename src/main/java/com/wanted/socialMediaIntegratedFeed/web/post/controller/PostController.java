@@ -1,11 +1,10 @@
-package com.wanted.socialMediaIntegratedFeed.web.content.controller;
+package com.wanted.socialMediaIntegratedFeed.web.post.controller;
 
 import com.wanted.socialMediaIntegratedFeed.global.common.dto.PageResponseDto;
-import com.wanted.socialMediaIntegratedFeed.web.content.dto.response.PostPaginationResponse;
-import com.wanted.socialMediaIntegratedFeed.web.content.service.PostService;
 import com.wanted.socialMediaIntegratedFeed.global.common.util.PageableUtil;
+import com.wanted.socialMediaIntegratedFeed.web.post.dto.response.PostPaginationResponse;
+import com.wanted.socialMediaIntegratedFeed.web.post.service.PostService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;

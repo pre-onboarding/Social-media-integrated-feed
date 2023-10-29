@@ -6,7 +6,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.wanted.socialMediaIntegratedFeed.domain.hashtag.HashtagRepository;
-import com.wanted.socialMediaIntegratedFeed.web.content.dto.response.PostPaginationResponse;
+import com.wanted.socialMediaIntegratedFeed.web.post.dto.response.PostPaginationResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

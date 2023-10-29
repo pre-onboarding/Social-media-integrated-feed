@@ -1,4 +1,4 @@
-package com.wanted.socialMediaIntegratedFeed.web.content.dto.response;
+package com.wanted.socialMediaIntegratedFeed.web.post.dto.response;
 
 
 import com.wanted.socialMediaIntegratedFeed.domain.post.Post;

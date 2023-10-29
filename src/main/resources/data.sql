@@ -8,7 +8,7 @@ insert into hashtag(name,created_at,modified_at) values
 ('#원종동',CURRENT_TIMESTAMP ,CURRENT_TIMESTAMP),
 ('#경력직',CURRENT_TIMESTAMP ,CURRENT_TIMESTAMP);
 
-insert into post_hashtag(content_id,hashtag_id,created_at,modified_at) values
+insert into post_hashtag(post_id,hashtag_id,created_at,modified_at) values
 (1,1,CURRENT_TIMESTAMP ,CURRENT_TIMESTAMP),
 (2,2,CURRENT_TIMESTAMP ,CURRENT_TIMESTAMP),
 (3,1,CURRENT_TIMESTAMP ,CURRENT_TIMESTAMP),

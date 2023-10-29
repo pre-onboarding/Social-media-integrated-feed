@@ -1,8 +1,8 @@
-package com.wanted.socialMediaIntegratedFeed.web.content.service;
+package com.wanted.socialMediaIntegratedFeed.web.post.service;
 
 import com.wanted.socialMediaIntegratedFeed.domain.hashtag.HashtagRepository;
 import com.wanted.socialMediaIntegratedFeed.global.common.dto.PageResponseDto;
-import com.wanted.socialMediaIntegratedFeed.web.content.dto.response.PostPaginationResponse;
+import com.wanted.socialMediaIntegratedFeed.web.post.dto.response.PostPaginationResponse;
 
 import com.wanted.socialMediaIntegratedFeed.domain.post.PostRepository;
 
@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final HashtagRepository hashtagRepository;
+
+    //
     @Override
     public PageResponseDto<PostPaginationResponse> findAllByHashtag(String hashtag,String type,String searchBy,String search,Pageable pageable){
 
