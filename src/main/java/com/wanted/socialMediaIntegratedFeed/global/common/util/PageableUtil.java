@@ -12,9 +12,8 @@ public class PageableUtil {
 
 
     public static Pageable of(int oneBasedPage, int size, Sort sort) {
-        if (oneBasedPage < 1)
-            throw new IllegalArgumentException("page는 1 이상이어야 합니다.");
 
-        return PageRequest.of(oneBasedPage - 1 , size, sort);
+
+        return PageRequest.of(oneBasedPage  , size, sort);
     }
 }
