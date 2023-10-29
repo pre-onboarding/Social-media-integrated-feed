@@ -2,10 +2,10 @@ package com.wanted.socialMediaIntegratedFeed.domain.post;
 
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.wanted.socialMediaIntegratedFeed.domain.hashtag.HashtagRepository;
 import com.wanted.socialMediaIntegratedFeed.web.content.dto.response.PostPaginationResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -15,8 +15,10 @@ import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.ObjectUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import static com.wanted.socialMediaIntegratedFeed.domain.hashtag.QHashtag.hashtag;
 import static com.wanted.socialMediaIntegratedFeed.domain.post.QPost.post;
 import static com.wanted.socialMediaIntegratedFeed.domain.post.QPostHashtag.postHashtag;
 
@@ -25,36 +27,46 @@ import static com.wanted.socialMediaIntegratedFeed.domain.post.QPostHashtag.post
 @RequiredArgsConstructor
 public class PostRepositoryCustomImpl implements PostRepositoryCustom {
     private final JPAQueryFactory jpaQueryFactory;
+    private final HashtagRepository hashtagRepository;
 
 
     @Override
-    public Page<PostPaginationResponse> findAllByHashtag(String hashtag, String type, String searchBy, String search, Pageable pageable) {
+    public Page<PostPaginationResponse> findAllByHashtag(String type, String searchBy, String search, Pageable pageable, Long hashtagId) {
 
-        List<PostPaginationResponse> posts = jpaQueryFactory.select(Projections.fields(PostPaginationResponse.class,
-                        post.id.as("postId"), post.type, post.title, post.content,
-                        post.viewCount, post.likeCount, post.shareCount,postHashtag.hashtag,
-                        post.createdAt, post, post.createdAt, post.modifiedAt))
-                .from(post)
-                .leftJoin(postHashtag)
-                .on(post.id.eq(postHashtag.post.id))
+        List<Post> posts = jpaQueryFactory.selectFrom(post)
                 .orderBy(PostSort(pageable))
                 .where(
                         searchPost(searchBy, search),
-                        searchHashtag(hashtag),
+                        searchHashtag(hashtagId),
                         post.type.stringValue().contains(type)
                 )
+                .leftJoin(postHashtag)
+                .on(post.id.eq(postHashtag.post.id))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
         JPAQuery<Long> countQuery = jpaQueryFactory
                 .select(post.count())
                 .from(post)
+                .leftJoin(postHashtag)
+                .on(post.id.eq(postHashtag.post.id))
                 .where(
                         searchPost(searchBy, search),
-                        searchHashtag(hashtag)
+                        searchHashtag(hashtagId),
+                        post.type.stringValue().contains(type)
                 );
-        return PageableExecutionUtils.getPage(posts, pageable, countQuery::fetchOne);
+
+
+        List<PostPaginationResponse> responses = new ArrayList<>();
+        for(Post post1 : posts){
+            List<String> hashtagNames = hashtagRepository.getHashtagName(post1.getId());
+            PostPaginationResponse from = PostPaginationResponse.from(post1,hashtagNames);
+            responses.add(from);
+        }
+
+        return PageableExecutionUtils.getPage(responses, pageable, countQuery::fetchOne);
     }
+
 
 
     private OrderSpecifier<?> PostSort(Pageable page) {
@@ -93,9 +105,9 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
         return null;
     }
 
-    private BooleanExpression searchHashtag(String hashtag) {
+    private BooleanExpression searchHashtag(Long hashtagId) {
         if (ObjectUtils.isEmpty(hashtag) || hashtag == null)
             return null;
-        return postHashtag.hashtag.name.eq("#" + hashtag);
+        return postHashtag.hashtag.id.eq(hashtagId);
     }
 }

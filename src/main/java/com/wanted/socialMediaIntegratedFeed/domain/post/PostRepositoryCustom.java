@@ -5,5 +5,5 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface PostRepositoryCustom {
-    Page<PostPaginationResponse> findAllByHashtag(String hashtag,String type,String searchBy,String search,Pageable pageable);
+    Page<PostPaginationResponse> findAllByHashtag(String type, String searchBy, String search, Pageable pageable, Long hashtagId) ;
 }
