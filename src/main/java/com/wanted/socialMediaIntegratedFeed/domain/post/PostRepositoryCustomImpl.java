@@ -29,10 +29,11 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
     private final JPAQueryFactory jpaQueryFactory;
     private final HashtagRepository hashtagRepository;
 
-
+    // 최종 로직
     @Override
     public Page<PostPaginationResponse> findAllByHashtag(String type, String searchBy, String search, Pageable pageable, Long hashtagId) {
 
+        // response에 들어갈 post 문 검색
         List<Post> posts = jpaQueryFactory.selectFrom(post)
                 .orderBy(PostSort(pageable))
                 .where(
@@ -45,6 +46,8 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
+
+        // 페이징 처리를 위한 post문 쿼리 카운트 검색
         JPAQuery<Long> countQuery = jpaQueryFactory
                 .select(post.count())
                 .from(post)
@@ -58,6 +61,8 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
 
 
         List<PostPaginationResponse> responses = new ArrayList<>();
+
+        // responseDto에 post, post에 해당하는 hashtagName 추가
         for(Post post1 : posts){
             List<String> hashtagNames = hashtagRepository.getHashtagName(post1.getId());
             PostPaginationResponse from = PostPaginationResponse.from(post1,hashtagNames);

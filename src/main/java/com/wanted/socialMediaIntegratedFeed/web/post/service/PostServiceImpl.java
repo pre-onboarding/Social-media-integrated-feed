@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
@@ -20,8 +21,9 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final HashtagRepository hashtagRepository;
 
-    //
+    // 게시물 목록 검색
     @Override
+    @Transactional(readOnly = true)
     public PageResponseDto<PostPaginationResponse> findAllByHashtag(String hashtag,String type,String searchBy,String search,Pageable pageable){
 
         Long hashtagId = hashtagRepository.findName(hashtag);

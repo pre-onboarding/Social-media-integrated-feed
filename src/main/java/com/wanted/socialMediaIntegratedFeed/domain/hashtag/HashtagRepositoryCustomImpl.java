@@ -16,6 +16,7 @@ import static com.wanted.socialMediaIntegratedFeed.domain.post.QPostHashtag.post
 public class HashtagRepositoryCustomImpl implements HashtagRepositoryCustom {
     private final JPAQueryFactory jpaQueryFactory;
 
+    // hashtagName을 통해 getId
     @Override
     public Long findName(String hashtagName){
         return jpaQueryFactory.select(hashtag.id)
@@ -23,6 +24,8 @@ public class HashtagRepositoryCustomImpl implements HashtagRepositoryCustom {
                 .where(hashtag.name.eq("#"+hashtagName))
                 .fetchOne();
     }
+
+    // postId을 통해 hashtagName
     @Override
     public List<String> getHashtagName(Long postId) {
         return jpaQueryFactory.select(hashtag.name)
