@@ -5,6 +5,7 @@ import com.wanted.socialMediaIntegratedFeed.domain.member.MemberRepository;
 import com.wanted.socialMediaIntegratedFeed.global.exception.ErrorCode;
 import com.wanted.socialMediaIntegratedFeed.global.exception.ErrorException;
 import com.wanted.socialMediaIntegratedFeed.global.jwt.JwtProvider;
+import com.wanted.socialMediaIntegratedFeed.web.member.dto.ApprovalRequest;
 import com.wanted.socialMediaIntegratedFeed.web.member.dto.SignupRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,9 +18,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
-import static com.wanted.socialMediaIntegratedFeed.global.exception.ErrorCode.DUPLICATE_EMAIL;
-import static com.wanted.socialMediaIntegratedFeed.global.exception.ErrorCode.DUPLICATE_USERNAME;
+import static com.wanted.socialMediaIntegratedFeed.global.exception.ErrorCode.*;
 
 @RequiredArgsConstructor
 @Service
@@ -38,8 +39,8 @@ public class MemberService implements UserDetailsService {
 
     /**
      * 멤버 회원가입
-     * @param request 에서 받은 이메일, 유저네임이 중복되어 있는지 확인 후 패스워드를 암호화해서 멤버를 저장합니다.
-     *                멤버 인증코드를 생성하여 redis에 저장
+     * @param request 에서 받은 이메일, 유저네임이 중복되어 있는지 확인 후 패스워드를 암호화해서 멤버를 저장 후
+     *                sendAuthCode에 email, username을 보내 인증코드 전송
      */
     @Transactional
     public void memberSignup(SignupRequest request) {
@@ -53,12 +54,51 @@ public class MemberService implements UserDetailsService {
 
         memberRepository.save(member);
 
+        sendAuthCode(member.getEmail(), member.getUsername());
+    }
+
+    /**
+     * 인증코드 전송
+     * @param username
+     * 인증코드를 생성 후 redis에 key = "AuthCode " + 유저네임, value = 인증코드 저장(5분 뒤 redis에서 자동 삭제 됨.)
+     * @param email: 이메일로 인증 코드 전송
+     */
+    @Transactional
+    public void sendAuthCode(String email, String username) {
+        Member member = memberRepository.findByEmail(email).orElseThrow(() -> new ErrorException(NON_EXISTENT_MEMBER));
+        if (!member.getUsername().equals(username)) {
+            throw new ErrorException(WRONG_USERNAME);
+        }
+
         String authCode = createAuthCode();
 
         valueOperations = redisTemplate.opsForValue();
-        valueOperations.set("AuthCode "+ member.getUsername(), authCode);
+        valueOperations.set("AuthCode "+ username, authCode, 5, TimeUnit.MINUTES);
         /** Todo: 이메일로 인증코드 전송 기능 추가시 삭제 요망 */
-        log.info("AuthCode = {}", valueOperations.get("AuthCode " + member.getUsername()));
+        log.info("AuthCode = {}", valueOperations.get("AuthCode " + username));
+    }
+
+    /**
+     * 멤버 인증
+     * @param request 에서 받은 유저네임으로 멤버를 찾고 비밀번호가 맞는지 확인 후
+     *                redis에서 AuthCode를 조회해서 올바른 코드면 멤버를 승인
+     */
+    @Transactional
+    public void memberApproval(ApprovalRequest request) {
+        Member member = memberRepository.findByUsername(request.getUsername())
+                .orElseThrow(() -> new ErrorException(NON_EXISTENT_MEMBER));
+
+        if (!encoder.matches(request.getPassword(), member.getPassword())) {
+            throw new ErrorException(WRONG_PASSWORD);
+        }
+
+        valueOperations = redisTemplate.opsForValue();
+        String redisAuthCode = valueOperations.get("AuthCode " + member.getUsername());
+
+        if (!redisAuthCode.equals(request.getAuthCode())) {
+            throw new ErrorException(WRONG_AUTH_CODE);
+        }
+        member.updateAuth();
     }
 
     /**
