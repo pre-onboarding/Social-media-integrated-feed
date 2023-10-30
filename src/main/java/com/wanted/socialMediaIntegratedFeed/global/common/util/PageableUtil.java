@@ -11,8 +11,14 @@ public class PageableUtil {
 
 
 
-    public static Pageable of(int oneBasedPage, int size, Sort sort) {
-
+    public static Pageable of(int oneBasedPage, int size, String orderBy, String orderBy1) {
+        Sort sort;
+        if(orderBy1.equals("내림차순") ){
+            sort = Sort.by(Sort.Direction.ASC, orderBy);
+        }
+        else{
+            sort = Sort.by(Sort.Direction.DESC, orderBy);
+        }
 
         return PageRequest.of(oneBasedPage  , size, sort);
     }

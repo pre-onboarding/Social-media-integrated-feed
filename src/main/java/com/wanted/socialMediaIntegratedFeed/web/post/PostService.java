@@ -6,12 +6,15 @@ import com.wanted.socialMediaIntegratedFeed.domain.post.PostRepository;
 import com.wanted.socialMediaIntegratedFeed.global.common.dto.PageResponseDto;
 import com.wanted.socialMediaIntegratedFeed.global.exception.ErrorCode;
 import com.wanted.socialMediaIntegratedFeed.global.exception.ErrorException;
+import com.wanted.socialMediaIntegratedFeed.web.post.dto.response.PostDetailResponse;
 import com.wanted.socialMediaIntegratedFeed.web.post.dto.response.PostPaginationResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -35,6 +38,14 @@ public class PostService {
     private Post findById(final long id) {
         return postRepository.findById(id)
                 .orElseThrow(() -> new ErrorException(ErrorCode.NOT_FOUND_POST));
+    }
+
+    @Transactional
+    public PostDetailResponse detailPost(Long id){
+        Post post =findById(id);
+        List<String> hashtagNames = hashtagRepository.getHashtagName(id);
+        post.updateView();
+        return PostDetailResponse.from(post,hashtagNames);
     }
 
     @Transactional(readOnly = true)
