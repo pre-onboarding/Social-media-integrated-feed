@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;
 
+public interface MemberRepository {
+
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
     Optional<Member> findByEmail(String email);
@@ -19,5 +21,4 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     boolean existsByUsername(String email);
 
     Optional<Member> findByUsername(String username);
-
 }

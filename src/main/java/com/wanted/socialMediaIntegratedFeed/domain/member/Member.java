@@ -18,6 +18,7 @@ import java.util.List;
 @Getter
 @Builder
 @AllArgsConstructor
+public class Member {
 public class Member extends BaseTimeEntity implements UserDetails {
 
     @Id
