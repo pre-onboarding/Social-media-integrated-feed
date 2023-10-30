@@ -63,5 +63,9 @@ public class Member extends BaseTimeEntity implements UserDetails {
     public boolean isEnabled() {
         return auth;
     }
+
+    public void updateAuth() {
+        this.auth = true;
+    }
   
 }

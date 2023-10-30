@@ -72,7 +72,7 @@ public class SecurityConfig {
      */
     private DaoAuthenticationProvider getDaoAuthenticationProvider() {
         var daoAuthenticationProvider = new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setUserDetailsService(new MemberService(memberRepository, jwtProvider));
+        daoAuthenticationProvider.setUserDetailsService(new MemberService(memberRepository, jwtProvider, null, null));
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
         return daoAuthenticationProvider;
     }

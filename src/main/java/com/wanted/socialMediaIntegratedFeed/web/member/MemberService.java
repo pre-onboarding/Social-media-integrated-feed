@@ -144,7 +144,7 @@ public class MemberService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) {
         return memberRepository.findByEmail(email)
-                .orElseThrow(() -> new ErrorException("이메일 혹은 비밀번호가 일치하지 않습니다.", ErrorCode.NOT_FOUND_MEMBER));
+                .orElseThrow(() -> new ErrorException("이메일 혹은 비밀번호가 일치하지 않습니다.", NON_EXISTENT_MEMBER));
     }
 
 }
