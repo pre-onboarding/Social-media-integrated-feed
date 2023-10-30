@@ -6,10 +6,12 @@ insert into post(title,content,type,like_count,share_count,view_count,created_at
 insert into hashtag(name,created_at,modified_at) values
 ('#채용',CURRENT_TIMESTAMP ,CURRENT_TIMESTAMP),
 ('#원종동',CURRENT_TIMESTAMP ,CURRENT_TIMESTAMP),
-('#경력직',CURRENT_TIMESTAMP ,CURRENT_TIMESTAMP);
+('#경력직',CURRENT_TIMESTAMP ,CURRENT_TIMESTAMP),
+('#example',CURRENT_TIMESTAMP ,CURRENT_TIMESTAMP);
 
 insert into post_hashtag(post_id,hashtag_id,created_at,modified_at) values
 (1,1,CURRENT_TIMESTAMP ,CURRENT_TIMESTAMP),
 (2,2,CURRENT_TIMESTAMP ,CURRENT_TIMESTAMP),
 (3,1,CURRENT_TIMESTAMP ,CURRENT_TIMESTAMP),
-(3,3,CURRENT_TIMESTAMP ,CURRENT_TIMESTAMP);
+(3,3,CURRENT_TIMESTAMP ,CURRENT_TIMESTAMP),
+(2,4,CURRENT_TIMESTAMP ,CURRENT_TIMESTAMP);

@@ -37,6 +37,9 @@ public class Post extends BaseTimeEntity {
     @Column
     private Long shareCount;
 
+    public void updateView(){
+        this.viewCount++;
+    }
     public void increaseLike() {
         this.likeCount += 1;
     }
