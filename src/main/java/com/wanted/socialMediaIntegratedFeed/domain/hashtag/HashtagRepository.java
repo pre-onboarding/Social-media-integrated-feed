@@ -1,4 +1,6 @@
 package com.wanted.socialMediaIntegratedFeed.domain.hashtag;
 
-public interface HashtagRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface HashtagRepository extends JpaRepository<Hashtag,Long> , HashtagRepositoryCustom {
 }
