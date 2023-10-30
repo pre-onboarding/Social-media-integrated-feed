@@ -1,4 +1,4 @@
-package com.wanted.socialMediaIntegratedFeed.domain.content;
+package com.wanted.socialMediaIntegratedFeed.domain.post;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
