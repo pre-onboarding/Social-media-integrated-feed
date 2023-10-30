@@ -18,7 +18,6 @@ import java.util.List;
 @Getter
 @Builder
 @AllArgsConstructor
-public class Member {
 public class Member extends BaseTimeEntity implements UserDetails {
 
     @Id
@@ -64,8 +63,5 @@ public class Member extends BaseTimeEntity implements UserDetails {
     public boolean isEnabled() {
         return auth;
     }
-
-    public void updateAuth() {
-        this.auth = true;
-    }
+  
 }

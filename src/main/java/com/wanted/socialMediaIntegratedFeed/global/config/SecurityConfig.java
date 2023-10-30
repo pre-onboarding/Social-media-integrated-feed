@@ -9,11 +9,6 @@ import com.wanted.socialMediaIntegratedFeed.web.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-
-@Configuration
-public class SecurityConfig {
-
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
@@ -121,6 +116,7 @@ public class SecurityConfig {
      * 사용자 비밀번호 암호화 작업에 사용할 Encoder를 반환합니다.
      * @author 정성국
      */
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
